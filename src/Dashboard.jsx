@@ -83,17 +83,17 @@ export default function Dashboard() {
             case 'home':
                 return (
                     <div className="space-y-6">
-                        <marquee scrollAmount="15" direction="left" className="text-lg text-purple-500 mb-6">Welcome to your dashboard! Check your balance and take on quiz challenges to earn more rewards.</marquee>
+                        <marquee scrollAmount="15" direction="left" className="text-md sm:text-lg text-purple-500 mb-6">Welcome to your dashboard! Check your balance and take on quiz challenges to earn more rewards.</marquee>
 
-                        <h3 className="text-2xl font-bold text-gray-800 border-b border-gray-300 pb-3">Account Overview</h3>
-                        <div className="grid grid-cols-2 gap-4">
+                        <h3 className="text-xl sm:text-2xl font-bold text-gray-800 border-b border-gray-300 pb-3">Account Overview</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="p-5 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
                                 <p className="text-sm text-gray-500">Available Balance</p>
-                                <p className="text-3xl font-extrabold text-purple-600 mt-1">₹{balance.toLocaleString()}</p>
+                                <p className="text-2xl sm:text-3xl font-extrabold text-purple-600 mt-1">₹{balance.toLocaleString()}</p>
                             </div>
                             <div className="p-5 bg-gray-50 border border-gray-200 rounded-lg shadow-sm">
                                 <p className="text-sm text-gray-500">Last Transaction Status</p>
-                                <p className="text-3xl font-extrabold text-purple-600 mt-1">Success</p>
+                                <p className="text-2xl sm:text-3xl font-extrabold text-purple-600 mt-1">Success</p>
                             </div>
                         </div>
                     </div>
@@ -101,11 +101,11 @@ export default function Dashboard() {
             case 'quiz':
                 if (!quizState.started) {
                     return (
-                        <div className="text-center py-10 animate-fadeIn space-y-4">
-                            <marquee scrollAmount="15" direction="left" className="text-lg text-purple-500 mb-6">Welcome to your dashboard! Check your balance and take on quiz challenges to earn more rewards.</marquee>
+                        <div className="text-center py-6 sm:py-10 animate-fadeIn space-y-4">
+                            <marquee scrollAmount="15" direction="left" className="text-md sm:text-lg text-purple-500 mb-6">Welcome to your dashboard! Check your balance and take on quiz challenges to earn more rewards.</marquee>
 
-                            <img src={img1} alt="Quiz Start" className="w-full max-w-xs mx-auto h-32 object-cover rounded-lg shadow-md" />
-                            <h3 className="text-3xl font-bold text-purple-700 mb-4">Quiz Challenge</h3>
+                            <img src={img1} alt="Quiz Start" className="w-full max-w-xs mx-auto h-24 sm:h-32 object-cover rounded-lg shadow-md" />
+                            <h3 className="text-2xl sm:text-3xl font-bold text-purple-700 mb-4">Quiz Challenge</h3>
                             <p className="text-gray-600 mb-8">Test your knowledge and earn money rewards!</p>
                             <button onClick={() => setQuizState({ ...quizState, started: true })}
                                 className="bg-purple-600 text-white px-10 py-3 rounded-full font-bold hover:bg-purple-700 transition-all shadow-lg hover:shadow-purple-200">
@@ -118,9 +118,9 @@ export default function Dashboard() {
                 if (quizState.isFinished) {
                     return (
                         <div className="text-center py-10 animate-scaleUp">
-                            <img src={img2} alt="Quiz Completed" className="w-full max-w-xs mx-auto h-32 object-cover rounded-lg shadow-md mb-4" />
-                            <div className="text-6xl mb-4">🎉</div>
-                            <h3 className="text-2xl font-bold text-gray-800">Level {quizState.level} Completed!</h3>
+                            <img src={img2} alt="Quiz Completed" className="w-full max-w-xs mx-auto h-24 sm:h-32 object-cover rounded-lg shadow-md mb-4" />
+                            <div className="text-5xl sm:text-6xl mb-4">🎉</div>
+                            <h3 className="text-xl sm:text-2xl font-bold text-gray-800">Level {quizState.level} Completed!</h3>
                             <p className="text-4xl font-black text-purple-600 my-4">Score: {quizState.score}</p>
                             {quizState.level === 1 ? (
                                 <button onClick={startNextLevel} className="bg-purple-600 text-white px-8 py-2 rounded-md font-bold hover:bg-purple-700 transition-all">
@@ -150,7 +150,7 @@ export default function Dashboard() {
                             <div className="bg-purple-600 h-2 rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
                         </div>
 
-                        <h3 className="text-xl font-bold text-gray-800 mb-8">{currentQ.q}</h3>
+                        <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-8">{currentQ.q}</h3>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {currentQ.a.map((option, index) => {

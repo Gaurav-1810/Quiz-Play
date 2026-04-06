@@ -51,7 +51,7 @@ export default function Login() {
         <div className="bg-white p-8 rounded-xl border border-purple-300 shadow-lg w-full max-w-md">
             <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=400&h=200&auto=format&fit=crop" alt="Login Illustration" className="w-full h-32 object-cover rounded-lg mb-6 shadow-sm" />
             <div className="mb-8 text-center">
-                <h1 className="text-2xl font-bold text-purple-700">Welcome to Unlimited Money Hack</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-purple-700">Welcome to Unlimited Money Hack</h1>
                 <p className="text-sm text-gray-500 mt-1">Please log in to your account</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
