@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-
+import img1 from '/public/images/quiz.jpeg';
+import img2 from '/public/images/quiz-completed.jpeg';
+import img3 from '/public/images/qr.jpeg';
+import img4 from '/public/images/gm.jpeg';
 export default function Dashboard() {
     const [activeTab, setActiveTab] = useState('home');
     const [balance, setBalance] = useState(0);
@@ -101,7 +104,7 @@ export default function Dashboard() {
                         <div className="text-center py-10 animate-fadeIn space-y-4">
                             <marquee scrollAmount="15" direction="left" className="text-lg text-purple-500 mb-6">Welcome to your dashboard! Check your balance and take on quiz challenges to earn more rewards.</marquee>
 
-                            <img src="./public/Auth/quiz.jpeg" alt="Quiz Start" className="w-full max-w-xs mx-auto h-32 object-cover rounded-lg shadow-md" />
+                            <img src={img1} alt="Quiz Start" className="w-full max-w-xs mx-auto h-32 object-cover rounded-lg shadow-md" />
                             <h3 className="text-3xl font-bold text-purple-700 mb-4">Quiz Challenge</h3>
                             <p className="text-gray-600 mb-8">Test your knowledge and earn money rewards!</p>
                             <button onClick={() => setQuizState({ ...quizState, started: true })}
@@ -115,7 +118,7 @@ export default function Dashboard() {
                 if (quizState.isFinished) {
                     return (
                         <div className="text-center py-10 animate-scaleUp">
-                            <img src="./public/Auth/quiz-completed.jpeg" alt="Quiz Completed" className="w-full max-w-xs mx-auto h-32 object-cover rounded-lg shadow-md mb-4" />
+                            <img src={img2} alt="Quiz Completed" className="w-full max-w-xs mx-auto h-32 object-cover rounded-lg shadow-md mb-4" />
                             <div className="text-6xl mb-4">🎉</div>
                             <h3 className="text-2xl font-bold text-gray-800">Level {quizState.level} Completed!</h3>
                             <p className="text-4xl font-black text-purple-600 my-4">Score: {quizState.score}</p>
@@ -183,11 +186,11 @@ export default function Dashboard() {
                 return <div className="p-10 border-2 border-dashed border-gray-300 text-center text-gray-600 text-2xl italic">Withdrawal ka Option dekhte hi aa gye Withdrawal krne 🤬.</div>;
             case 'deposit':
                 return <div className="p-10 border-2 border-dashed border-gray-300 text-center text-2xl text-gray-600 italic">Deposit TOH krne se rhe aap log 😒...
-                    <img src="./public/Auth/qr.jpeg" alt="Deposit" className="w-160 h-150  rounded-lg shadow-md mb-4" />
+                    <img src={img3} alt="Deposit" className="w-160 h-150  rounded-lg shadow-md mb-4" />
                 </div>;
             case 'support':
                 return <div className="p-10 border-2 border-dashed border-gray-300 text-center text-red-600 text-2xls italic">
-                    <img src="./public/Auth/gm.jpeg" alt="" />
+                    <img src={img4} alt="" />
                     For support, please contact our team @GauravMehra. </div>;
             default:
                 return null;
