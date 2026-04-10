@@ -365,11 +365,11 @@ export default function Dashboard() {
                 );
             case 'machine':
                 const machines = [
-                    { id: 1, price: 300, income: 279, days: 12 },
-                    { id: 2, price: 400, income: 380, days: 12 },
-                    { id: 3, price: 500, income: 490, days: 12 },
-                    { id: 4, price: 1000, income: 950, days: 12 },
-                    { id: 5, price: 2000, income: 1950, days: 12 },
+                    { id: 1, price: 300, income: 800, days: 12 },
+                    { id: 2, price: 400, income: 1200, days: 12 },
+                    { id: 3, price: 500, income: 1800, days: 12 },
+                    { id: 4, price: 1000, income: 2450, days: 12 },
+                    { id: 5, price: 2000, income: 3050, days: 12 },
                 ];
                 return (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fadeIn">
