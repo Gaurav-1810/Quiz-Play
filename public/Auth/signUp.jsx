@@ -28,7 +28,7 @@ export default function SignUp() {
         } else {
             const res = await axios.post("https://6970971b78fec16a63fe3342.mockapi.io/users", formData);
             toast.success("Sign up successful!");
-            navigate("/");
+            navigate("/login");
         }
         } catch (error) {
             toast.error("Error during sign-up:", error);
@@ -36,12 +36,12 @@ export default function SignUp() {
     }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-purple-50 font-sans p-4">
-        <div className="bg-white p-8 rounded-xl border border-purple-300 shadow-lg w-full max-w-md">
-            <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=400&h=200&auto=format&fit=crop" alt="Register Illustration" className="w-full h-32 object-cover rounded-lg mb-6 shadow-sm" />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 font-sans p-4">
+        <div className="bg-white p-8 rounded-xl border border-blue-200 shadow-xl w-full max-w-md">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=400&h=200&auto=format&fit=crop" alt="Corporate Building" className="w-full h-32 object-cover rounded-lg mb-6 shadow-sm" />
             <div className="mb-8 text-center">
-                <h1 className="text-xl sm:text-2xl font-bold text-purple-700">Welcome to Unlimited Money Hack</h1>
-                <p className="text-sm text-gray-500 mt-1">Create your account</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-blue-800">TATA Group India</h1>
+                <p className="text-sm text-gray-500 mt-1">Register for Digital Rewards Membership</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -50,7 +50,7 @@ export default function SignUp() {
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-colors placeholder-gray-400"
+                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors placeholder-gray-400"
                         placeholder="Your Name"
                         required/>
                 </div>
@@ -61,7 +61,7 @@ export default function SignUp() {
                         value={formData.phoneNo}
                         onChange={handleChange}
                         autoComplete="off"
-                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-colors placeholder-gray-400"
+                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors placeholder-gray-400"
                         placeholder="Your Phone Number"
                         required/>
                 </div>
@@ -72,7 +72,7 @@ export default function SignUp() {
                         value={formData.password}
                         onChange={handleChange}
                         autoComplete="off"
-                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-colors placeholder-gray-400"
+                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors placeholder-gray-400"
                         placeholder="Password"
                         required/>
                 </div>
@@ -82,16 +82,16 @@ export default function SignUp() {
                         name="confirmPassword"            
                         value={formData.confirmPassword}
                         onChange={handleChange}
-                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-colors placeholder-gray-400"
+                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors placeholder-gray-400"
                         placeholder="Confirm Password"
                         required/>
                 </div>
-                <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-4 rounded-md transition-all active:scale-95 shadow-md mt-4">
+                <button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-md transition-all active:scale-95 shadow-md mt-4">
                     Register
                 </button>
             </form>
             <div className="mt-6 text-center">
-                <Link to="/" className="text-sm text-purple-600 hover:text-purple-800 transition-colors underline">
+                <Link to="/login" className="text-sm text-blue-700 hover:text-blue-900 transition-colors underline">
                     Already have an account? Login here.
                 </Link>
             </div>

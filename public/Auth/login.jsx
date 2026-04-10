@@ -47,12 +47,12 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-purple-50 font-sans p-4">
-        <div className="bg-white p-8 rounded-xl border border-purple-300 shadow-lg w-full max-w-md">
-            <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=400&h=200&auto=format&fit=crop" alt="Login Illustration" className="w-full h-32 object-cover rounded-lg mb-6 shadow-sm" />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-100 font-sans p-4">
+        <div className="bg-white p-8 rounded-xl border border-blue-200 shadow-xl w-full max-w-md">
+            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?q=80&w=400&h=200&auto=format&fit=crop" alt="Office Space" className="w-full h-32 object-cover rounded-lg mb-6 shadow-sm" />
             <div className="mb-8 text-center">
-                <h1 className="text-xl sm:text-2xl font-bold text-purple-700">Welcome to Unlimited Money Hack</h1>
-                <p className="text-sm text-gray-500 mt-1">Please log in to your account</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-blue-800">TATA Group India</h1>
+                <p className="text-sm text-gray-500 mt-1">Corporate Member Login</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
@@ -61,7 +61,7 @@ export default function Login() {
                         name="phoneNo"
                         value={formData.phoneNo}
                         onChange={handleChange}
-                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-colors placeholder-gray-400"
+                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors placeholder-gray-400"
                         placeholder="Your Phone Number"
                         required/>
                 </div>
@@ -71,16 +71,16 @@ export default function Login() {
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
-                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-colors placeholder-gray-400"
+                        className="w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors placeholder-gray-400"
                         placeholder="Password"
                         required/>
                 </div>
-                <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-4 rounded-md transition-all active:scale-95 shadow-md">
+                <button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded-md transition-all active:scale-95 shadow-md">
                     Login
                 </button>
             </form>
             <div className="mt-6 text-center">
-                <Link to="/sign-up" className="text-sm text-purple-600 hover:text-purple-800 transition-colors underline">
+                <Link to="/" className="text-sm text-blue-700 hover:text-blue-900 transition-colors underline">
                     Don't have an account? Register here.
                 </Link>
             </div>

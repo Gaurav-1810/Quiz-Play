@@ -9,11 +9,11 @@ export default function App() {
   const router  =  createBrowserRouter([
     {
       path: "/",
-      element: <Login />
+      element: <SignUp />
     },
     {
-      path: "/sign-up",
-      element: <SignUp />
+      path: "/login",
+      element: <Login />
     },
     {
       path: "/dashboard",
