@@ -62,7 +62,7 @@ export default function Dashboard() {
         const loadDashboard = async () => {
             // Simulating API response delay
             await new Promise(r => setTimeout(r, 1200));
-            setBalance(2500);
+            setBalance(0);
             setUser({ name: "Vandita", status: "Verified Member" });
             setNews("Welcome to TATA Group Digital Rewards. Complete quiz tasks to earn professional incentives. Secure withdrawals enabled.");
             setLoading(false);
