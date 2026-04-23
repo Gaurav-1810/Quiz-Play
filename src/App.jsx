@@ -4,7 +4,7 @@ import Login from "../public/Auth/login.jsx"
 import Dashboard from "./Dashboard.jsx"
 import Quiz from "./TaskBar/Quiz.jsx"
 import Withdraw from "./TaskBar/Withdraw.jsx"
-import Deposit from "./TaskBar/Deposit.js"
+import Deposit from "./TaskBar/deposit.jsx"
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 export default function App() {
@@ -39,7 +39,7 @@ export default function App() {
 
   return (
     <>
-      <RouterProvider router={router} />\
+      <RouterProvider router={router} />
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
     </>
   )

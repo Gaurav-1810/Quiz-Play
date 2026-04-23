@@ -1,5 +1,16 @@
 import React from 'react';
-const img3 = "/images/QR1.jpeg";
+const img3 = "../public/images/upi-qr.jpeg";
+
+const DEPOSIT_LINKS = {
+    300: 'https://rzp.io/rzp/oHhUqDn',
+    400: 'https://rzp.io/rzp/Xpym4v0',
+    500: 'https://rzp.io/rzp/d9hKw2p',
+    600: 'https://rzp.io/rzp/uRWblqm',
+    700: 'https://rzp.io/rzp/mGWB1MLE',
+    800: 'https://rzp.io/rzp/hQrpHQx',
+    900: 'https://rzp.io/rzp/huzZpWt6',
+    1000: 'https://rzp.io/rzp/u9uuezAh',
+};
 
 export default function Deposit({ depositForm, setDepositForm, triggerUPI, handleDeposit }) {
     return (
@@ -10,12 +21,12 @@ export default function Deposit({ depositForm, setDepositForm, triggerUPI, handl
             </div>
             <div className="space-y-4">
                 <div className="flex flex-wrap gap-2 justify-center mb-2">
-                    {[300, 400, 500, 600, 1000].map((amt) => (
+                    {[300, 400, 500, 600, 700, 800, 900, 1000].map((amt) => (
                         <button
                             key={amt}
                             onClick={() => {
                                 setDepositForm({ ...depositForm, amount: amt.toString() });
-                                window.open('https://rzp.io/rzp/ZUeUg1V', '_blank');
+                                window.open(DEPOSIT_LINKS[amt], '_blank');
                             }}
                             className="flex-1 min-w-[70px] py-2 bg-purple-50 border-2 border-purple-200 rounded-lg text-purple-700 font-bold hover:bg-purple-600 hover:text-white transition-all active:scale-95 shadow-sm"
                         >
@@ -34,11 +45,7 @@ export default function Deposit({ depositForm, setDepositForm, triggerUPI, handl
                     />
                 </div>
                 <button 
-                    onClick={() => {
-                        if (depositForm.amount > 0) {
-                            window.open('https://rzp.io/rzp/ZUeUg1V', '_blank');
-                        } else if (triggerUPI) triggerUPI();
-                    }}
+                    onClick={triggerUPI}
                     className="w-full bg-green-600 text-white py-4 rounded-xl font-bold hover:bg-green-700 shadow-lg shadow-green-100 transition-all active:scale-[0.98]"
                 >
                     📱 Pay via UPI App (Mobile Only)

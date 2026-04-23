@@ -1,5 +1,5 @@
 import React from 'react';
-import img4 from '/public/images/gm.jpeg';
+import img4 from '/public/images/img4.png';
 
 export default function Support() {
     return (
