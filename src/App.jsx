@@ -2,6 +2,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import SignUp from "../public/Auth/signUp.jsx"
 import Login from "../public/Auth/login.jsx"
 import Dashboard from "./Dashboard.jsx"
+import Quiz from "../public/TaskBar/Quiz.jsx"
+import Withdraw from "../public/TaskBar/Withdraw.jsx"
+import Deposit from "../public/TaskBar/Deposit.jsx"
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 export default function App() {
@@ -18,6 +21,18 @@ export default function App() {
     {
       path: "/dashboard",
       element: <Dashboard />
+    },
+    {
+      path: "/quiz",
+      element: <Quiz />
+    },
+    {
+      path: "/withdraw",
+      element: <Withdraw />
+    },
+    {
+      path: "/deposit",
+      element: <Deposit />
     }
 
   ])

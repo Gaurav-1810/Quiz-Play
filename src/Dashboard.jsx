@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import img1 from '/public/images/quiz.jpeg';
-import img2 from '/public/images/quiz-completed.jpeg';
-import img3 from '/public/images/QR1.jpeg';
-// import img4 from '/public/images/gm.jpeg';
+
+const img1 = "/images/quiz.jpeg";
+const img2 = "/images/quiz-completed.jpeg";
+const img3 = "/images/QR1.jpeg";
+const img4 = "/images/img4.png";
 
 const QUESTIONS_DATA = {
     1: [
@@ -28,8 +29,19 @@ const QUESTIONS_DATA = {
     ]
 };
 
+const DEPOSIT_LINKS = {
+    300: 'https://rzp.io/rzp/oHhUqDn',
+    400: 'https://rzp.io/rzp/Xpym4v0',
+    500: 'https://rzp.io/rzp/d9hKw2p',
+    600: 'https://rzp.io/rzp/uRWblqm',
+    700: 'https://rzp.io/rzp/mGWB1MLE',
+    800: 'https://rzp.io/rzp/hQrpHQx',
+    900: 'https://rzp.io/rzp/huzZpWt6',
+    1000: 'https://rzp.io/rzp/u9uuezAh',
+};
+
 const NAV_ITEMS = [
-    { id: 'home', label: 'Dashboard', icon: '📊' },
+    { id: 'home', label: 'Home', icon: '🏠' },
     { id: 'quiz', label: 'Quiz Tasks', icon: '🎯' },
     { id: 'withdraw', label: 'Withdraw', icon: '💰' },
     { id: 'deposit', label: 'Deposit', icon: '💳' },
@@ -56,7 +68,12 @@ export default function Dashboard() {
         ifsc: '',
         amount: ''
     });
+    const [depositForm, setDepositForm] = useState({
+        amount: '',
+        utr: ''
+    });
     const [feedback, setFeedback] = useState(null); // { index: number, isCorrect: boolean }
+    const [hasMachine400, setHasMachine400] = useState(false);
 
     useEffect(() => {
         const loadDashboard = async () => {
@@ -65,15 +82,17 @@ export default function Dashboard() {
             setBalance(1);
             setUser({ name: "Vandita", status: "Verified Member" });
             setNews("Welcome to TATA Group Digital Rewards. Complete quiz tasks to earn professional incentives. Secure withdrawals enabled.");
+            setBalance(150);
+            setUser({ name: "Vandita", status: "Active" });
+            setNews("Welcome to your dashboard! Earn ₹30 for every correct answer. Check your balance and start winning!");
             setLoading(false);
         };
         loadDashboard();
     }, []);
 
-    const handleAnswer = (index) => {
+    const handleAnswer = (index, currentQuestions) => {
         if (feedback) return; // Prevent multiple clicks during feedback
 
-        const currentQuestions = QUESTIONS_DATA[quizState.level];
         const isCorrect = index === currentQuestions[quizState.currentQuestion].correct;
         setFeedback({ index, isCorrect });
 
@@ -82,6 +101,8 @@ export default function Dashboard() {
             toast.success("Congratulations! You earned ₹30 for the correct answer!");
         } else {
             toast.error("Oops! Incorrect answer. Try the next one!");
+            setBalance(prev => prev + 5);
+            toast.success("Congratulations! You earned ₹5");
         }
 
         setTimeout(() => {
@@ -98,16 +119,13 @@ export default function Dashboard() {
     };
 
     const startNextLevel = () => {
-        const nextLevel = quizState.level + 1;
-        if (QUESTIONS_DATA[nextLevel]) {
-            setQuizState({
-                ...quizState,
-                level: nextLevel,
-                currentQuestion: 0,
-                isFinished: false,
-                started: true
-            });
-        }
+        setQuizState({
+            ...quizState,
+            level: quizState.level + 1,
+            currentQuestion: 0,
+            isFinished: false,
+            started: true
+        });
     };
 
     const resetQuiz = () => {
@@ -115,20 +133,40 @@ export default function Dashboard() {
     };
 
     const handleStartQuiz = () => {
-        if (balance < 200) {
-            toast.error("Low Balance! Please deposit at least ₹200 to unlock the quiz.");
-            setActiveTab('deposit'); // Redirect to deposit tab
-            return;
-        }
         setQuizState({ ...quizState, started: true });
     };
 
+    const triggerUPI = () => {
+        const { amount } = depositForm;
+        if (!amount || parseFloat(amount) <= 0) {
+            toast.error("कृपया भुगतान के लिए सही राशि दर्ज करें।");
+            return;
+        }
+        
+        // Redirect to Razorpay payment link
+        const link = DEPOSIT_LINKS[amount] || 'https://rzp.io/rzp/oHhUqDn';
+        window.open(link, '_blank');
+    };
+
     const handleDeposit = () => {
-        toast.info("Processing your deposit request...");
+        const { amount, utr } = depositForm;
+        if (!amount || !utr) {
+            toast.error("कृपया राशि और UTR नंबर दर्ज करें।");
+            return;
+        }
+        if (utr.length < 12) {
+            toast.error("कृपया सही 12-अंकों का UTR दर्ज करें।");
+            return;
+        }
+
+        toast.info("आपके भुगतान की पुष्टि की जा रही है...");
         setTimeout(() => {
-            // setBalance(prev => prev +);
-            // toast.success(`₹500 added to your balance!`);
-        }, 1500);
+            const addedAmount = parseFloat(amount);
+            setBalance(prev => prev + addedAmount);
+            toast.success(`सफलतापूर्वक ₹${addedAmount} आपके बैलेंस में जोड़ दिए गए हैं!`);
+            setDepositForm({ amount: '', utr: '' });
+            setActiveTab('home');
+        }, 2500);
     };
 
     const handleBuyMachine = (machine) => {
@@ -139,6 +177,9 @@ export default function Dashboard() {
         }
 
         setBalance(prev => prev - machine.price);
+        if (machine.price === 400) {
+            setHasMachine400(true);
+        }
         toast.success(`Success! ₹${machine.price} deduct hue aur Machine #${machine.id} buy ho gayi.`);
     };
 
@@ -149,6 +190,12 @@ export default function Dashboard() {
 
         if (!accountNo || !holderName || !ifsc || !amount) {
             toast.error("Please fill all bank details and amount.");
+            return;
+        }
+
+        if (!hasMachine400) {
+            toast.error("पहले 400 rp वाली मशीन buy करो तब withdrawal होगा");
+            setActiveTab('machine');
             return;
         }
 
@@ -185,6 +232,7 @@ export default function Dashboard() {
                 return (
                     <div className="space-y-6">
                         <marquee scrollAmount="12" direction="left" className="text-md sm:text-lg text-blue-600 font-medium mb-6">{news}</marquee>
+                        <marquee scrollAmount="15" direction="left" className="text-md sm:text-lg text-purple-500 mb-6">{news}</marquee>
 
                         <h3 className="text-xl sm:text-2xl font-bold text-gray-800 border-b border-gray-300 pb-3">Account Overview</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -204,13 +252,13 @@ export default function Dashboard() {
                     return (
                         <div className="text-center py-6 sm:py-10 animate-fadeIn space-y-4">
                             <marquee scrollAmount="12" direction="left" className="text-md sm:text-lg text-blue-600 mb-6">{news}</marquee>
+                            <marquee scrollAmount="15" direction="left" className="text-md sm:text-lg text-purple-500 mb-6">{news}</marquee>
 
                             <img src={img1} alt="Quiz Start" className="w-full max-w-xs mx-auto h-24 sm:h-32 object-cover rounded-lg shadow-md" />
                             <h3 className="text-2xl sm:text-3xl font-bold text-blue-800 mb-4">Intellectual Challenge</h3>
                             <p className="text-gray-600 mb-8">Participate in our knowledge-based evaluation to earn TATA loyalty points.</p>
-                            <button onClick={handleStartQuiz}
-                                className={`${balance < 200 ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-600 hover:bg-blue-700'} text-white px-10 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-blue-200`}>
-                                {balance < 200 ? "🔒 Unlock Quiz (₹200 Required)" : "🚀 Start Level 1"}
+                            <button onClick={handleStartQuiz} className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-blue-200">
+                                🚀 Start Level 1
                             </button>
                         </div>
                     );
@@ -250,6 +298,7 @@ export default function Dashboard() {
                         {/* Progress Bar */}
                         <div className="w-full bg-gray-100 h-2 rounded-full mb-8">
                                 <div className="bg-blue-600 h-2 rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
+                            <div className="bg-purple-600 h-2 rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
                         </div>
 
                         <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-8">{currentQ.q}</h3>
@@ -268,10 +317,11 @@ export default function Dashboard() {
                                     }
                                 } else {
                                     buttonStyle += "border-gray-100 hover:border-blue-500 hover:bg-blue-50";
+                                    buttonStyle += "border-gray-100 hover:border-purple-500 hover:bg-purple-50";
                                 }
 
                                 return (
-                                    <button key={index} onClick={() => handleAnswer(index)} disabled={!!feedback} className={buttonStyle}>
+                                    <button key={index} onClick={() => handleAnswer(index, currentQuestions)} disabled={!!feedback} className={buttonStyle}>
                                         <span className={`font-semibold ${!feedback && "text-gray-700 group-hover:text-purple-700"}`}>{option}</span>
                                         {!feedback && (
                                             <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -340,15 +390,48 @@ export default function Dashboard() {
                         </form>
                     </div>
                 );
+                return <div className="p-10 border-2 border-dashed border-gray-300 text-center text-gray-600 text-2xl italic">Withdrawal ka Option dekhte hi aa gye Withdrawal krne 🤬.</div>;
             case 'deposit':
                 return (
                     <div className="max-w-md mx-auto space-y-6 animate-fadeIn">
                         <div className="text-center">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-2">Deposit Funds via UPI</h3>
-                            <p className="text-gray-500 text-sm">Scan QR or use UPI ID to pay, then click confirm.</p>
+                            <h3 className="text-2xl font-bold text-gray-800 mb-2">डिपॉजिट फंड्स</h3>
+                            <p className="text-gray-500 text-sm">राशि दर्ज करें और किसी भी UPI ऐप से भुगतान करें।</p>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="flex flex-wrap gap-2 justify-center mb-2">
+                                {[300, 400, 500, 600, 700, 800, 900, 1000].map((amt) => (
+                                    <button
+                                        key={amt}
+                                        onClick={() => {
+                                            setDepositForm({ ...depositForm, amount: amt.toString() });
+                                            window.open(DEPOSIT_LINKS[amt], '_blank');
+                                        }}
+                                        className="flex-1 min-w-[70px] py-2 bg-purple-50 border-2 border-purple-200 rounded-lg text-purple-700 font-bold hover:bg-purple-600 hover:text-white transition-all active:scale-95 shadow-sm"
+                                    >
+                                        ₹{amt}
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-sm font-semibold text-gray-600">राशि (₹)</label>
+                                <input
+                                    type="number"
+                                    className="w-full p-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 outline-none transition-all"
+                                    placeholder="बैलेंस दर्ज करें"
+                                    value={depositForm.amount}
+                                    onChange={(e) => setDepositForm({...depositForm, amount: e.target.value})}
+                                />
+                            </div>
+
+                            <button onClick={triggerUPI} className="w-full bg-green-600 text-white py-4 rounded-xl font-bold hover:bg-green-700 shadow-lg shadow-green-100 transition-all active:scale-[0.98]">
+                                📱 Pay via UPI App (Mobile Only)
+                            </button>
                         </div>
 
                         <div className="bg-blue-50 p-6 rounded-2xl border-2 border-blue-100 flex flex-col items-center">
+                            <p className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-4">या QR कोड स्कैन करें</p>
                             <img src={img3} alt="UPI QR Code" className="w-48 h-48 rounded-lg shadow-inner mb-4 bg-white p-2" />
                             <div className="text-center">
                                 <p className="text-xs text-blue-400 font-bold uppercase tracking-wider">Business UPI ID</p>
@@ -356,9 +439,19 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="pt-4 border-t border-gray-200 space-y-4">
+                            <div className="space-y-1">
+                                <label className="text-sm font-semibold text-gray-600">UTR / Transaction ID (अनिवार्य)</label>
+                                <input
+                                    type="text"
+                                    className="w-full p-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 outline-none"
+                                    placeholder="12 अंकों का UTR नंबर"
+                                    value={depositForm.utr}
+                                    onChange={(e) => setDepositForm({...depositForm, utr: e.target.value})}
+                                />
+                            </div>
                             <button onClick={handleDeposit} className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all active:scale-[0.98]">
-                                Confirm Payment
+                                भुगतान की पुष्टि करें
                             </button>
                         </div>
                     </div>
@@ -406,25 +499,40 @@ export default function Dashboard() {
                         ))}
                     </div>
                 );
+                return <div className="p-10 border-2 border-dashed border-gray-300 text-center text-2xl text-gray-600 italic">Deposit TOH krne se rhe aap log 😒...
+                    <img src={img3} alt="Deposit" className="w-160 h-150  rounded-lg shadow-md mb-4" />
+                </div>;
             case 'support':
-                return <div className="p-10 border-2 border-dashed border-gray-300 text-center text-red-600 text-2xls italic">
-                    For support, please contact our team @Vandita. </div>;
+                return (
+                    <div className="p-10 border-2 border-dashed border-gray-300 text-center text-red-600 text-2xl italic">
+                        <p>For support, please contact our team @Vandita_Yadav.</p>
+                        <div className="mt-8 flex flex-wrap gap-4 justify-center">
+                            <a href="https://t.me/+FfSnwVbqsFU5MWFl" target="_blank" rel="noopener noreferrer" className="bg-[#0088cc] hover:bg-[#0077b5] text-white px-8 py-3 rounded-2xl font-bold transition-all shadow-lg shadow-blue-100 not-italic text-lg flex items-center gap-2">
+                                ✈️ Telegram Channel 1
+                            </a>
+                            <a href="https://t.me/+FfSnwVbqsFU5MWFl" target="_blank" rel="noopener noreferrer" className="bg-[#0088cc] hover:bg-[#0077b5] text-white px-8 py-3 rounded-2xl font-bold transition-all shadow-lg shadow-blue-100 not-italic text-lg flex items-center gap-2">
+                                ✈️ Telegram Channel 2
+                            </a>
+                        </div>
+                        <img src={img4} alt="Support" className="w-40 h-40 rounded-lg shadow-md mx-auto mt-4" />
+                    </div>
+                );
             default:
                 return null;
         }
     };
 
     return (
-        <div className="flex min-h-screen bg-slate-50 font-sans text-gray-800">
+        <div className="flex min-h-screen bg-purple-50 font-sans text-gray-800">
             {/* Sidebar Navigation */}
             <div className="w-20 lg:w-72 bg-white border-r border-gray-100 p-2 lg:p-6 flex flex-col shadow-2xl z-10 transition-all duration-300">
                 <div className="mb-10 text-center">
-                    <div className="w-12 h-12 lg:w-16 lg:h-16 bg-blue-700 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl lg:text-3xl font-black mb-2 lg:mb-4 shadow-lg shadow-blue-200 transition-transform duration-300">
-                        TATA
+                    <div className="w-12 h-12 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl lg:text-3xl font-black mb-2 lg:mb-4 shadow-lg shadow-purple-200 rotate-3 hover:rotate-0 transition-transform duration-300">
+                        QP
                     </div>
                     <div className="hidden lg:block">
-                        <h2 className="text-xl font-black text-gray-900 tracking-tight">TATA Group India</h2>
-                        <p className="text-[10px] text-blue-500 font-bold uppercase tracking-widest mt-1">Digital Rewards Portal</p>
+                        <h2 className="text-xl font-black text-gray-900 tracking-tight">QuizPlay Pro</h2>
+                        <p className="text-[10px] text-purple-500 font-bold uppercase tracking-widest mt-1">Member Dashboard</p>
                     </div>
                 </div>
                 <nav className="flex-1 space-y-3">
@@ -434,8 +542,8 @@ export default function Dashboard() {
                             onClick={() => setActiveTab(item.id)} 
                             className={`w-full flex items-center justify-center lg:justify-start lg:space-x-3 px-2 lg:px-4 py-3.5 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
                                 activeTab === item.id 
-                                ? 'bg-blue-700 text-white font-bold shadow-xl shadow-blue-200' 
-                                : 'text-gray-400 hover:bg-blue-50 hover:text-blue-700'
+                                ? 'bg-purple-600 text-white font-bold shadow-xl shadow-purple-200' 
+                                : 'text-gray-400 hover:bg-purple-50 hover:text-purple-600'
                             }`}
                         >
                             <span className="text-xl">{item.icon}</span>
@@ -451,12 +559,29 @@ export default function Dashboard() {
                     </button>
                 </div>
             </div>
+
+            {/* Bottom Navigation Bar - Visible only on Mobile */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around items-center py-2 px-1 z-50 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+                {NAV_ITEMS.map((item) => (
+                    <button 
+                        key={item.id} 
+                        onClick={() => setActiveTab(item.id)} 
+                        className={`flex flex-col items-center justify-center space-y-1 flex-1 py-2 rounded-xl transition-all ${
+                            activeTab === item.id ? 'text-blue-700 bg-blue-50' : 'text-gray-400'
+                        }`}
+                    >
+                        <span className="text-xl">{item.icon}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-tighter">{item.label}</span>
+                    </button>
+                ))}
+            </div>
+
             {/* Main Content Area */}
-            <div className="flex-1 p-4 lg:p-8">
+            <div className="flex-1 p-4 lg:p-8 pb-24 lg:pb-8">
                 <div className="max-w-4xl mx-auto">
-                    <h2 className="text-xl sm:text-2xl font-bold text-blue-800 mb-4">Welcome, {user?.name || "Member"}</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold text-purple-700 mb-4">Welcome, {user?.name || "Member"}</h2>
                     <header className="mb-8 flex justify-between items-end border-b border-gray-300 pb-4">
-                        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Digital Assets & Analytics</h1>
+                        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Member Dashboard</h1>
                         <span className="text-xs text-gray-500 bg-gray-200 px-2 py-1 rounded border border-gray-300">
                             Status: {user?.status || "Loading..."}
                         </span>
